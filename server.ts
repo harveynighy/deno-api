@@ -1,7 +1,7 @@
 import { Application, Context, Router } from "https://deno.land/x/oak/mod.ts";
 import { green, yellow } from "https://deno.land/std@0.53.0/fmt/colors.ts";
 
-import { addProduct, getProducts, getProduct } from "./controllers/products.ts";
+import { addProduct, getProduct, getProducts } from "./controllers/products.ts";
 
 (async () => {
   const port: number = 8080;
@@ -12,9 +12,9 @@ import { addProduct, getProducts, getProduct } from "./controllers/products.ts";
   router.get("/api/v1/products", (context) => {
     getProducts(context);
   })
-  .get("/api/v1/products/:id", (context: Context) => {
-    getProduct(context);
-  })
+    .get("/api/v1/products/:id", (context: Context) => {
+      getProduct(context);
+    })
     .post("/api/v1/products", async (context: Context) => {
       await addProduct(context);
     })
