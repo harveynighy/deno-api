@@ -76,16 +76,9 @@ const getProduct = (
 const addProduct = async (
   { response, request }: { response: any; request: any },
 ) => {
-  const body = await request.body();
-  const product: Product = await body.value;
-
-  if (!request.hasBody) {
-    response.status = 404;
-    response.body = {
-      success: false,
-      msg: "No data",
-    };
-  } else {
+  try {
+    const body = await request.body();
+    const product: Product = await body.value;
     const uniqid = uuidV4.generate();
     product.id = uniqid;
     products.push(product);
@@ -95,7 +88,23 @@ const addProduct = async (
       success: true,
       data: product,
     };
+  } catch (error) {
+    response.status = 404;
+    response.body = {
+      success: false,
+      msg: "No data",
+    };
   }
 };
 
-export { addProduct, getProduct, getProducts };
+const updateProduct = async (
+  { params, request, response }: {
+    params: { id: string };
+    request: any;
+    response: any;
+  },
+) => {
+  response.body = "Update Product";
+};
+
+export { addProduct, getProduct, getProducts, updateProduct };
