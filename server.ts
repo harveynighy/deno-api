@@ -15,8 +15,8 @@ import { addProduct, getProducts, getProduct } from "./controllers/products.ts";
   .get("/api/v1/products/:id", (context: Context) => {
     getProduct(context);
   })
-    .post("/api/v1/products", (context: Context) => {
-      addProduct(context);
+    .post("/api/v1/products", async (context: Context) => {
+      await addProduct(context);
     })
     .get("/", (context) => {
       context.response.body = "Hello world!";

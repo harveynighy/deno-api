@@ -2,36 +2,36 @@ import { v4 as uuidV4 } from "https://deno.land/std@0.82.0/uuid/mod.ts";
 // import { Product } from "../types.ts";
 
 interface Product {
-  id: string;
   name: string;
   description: string;
   price: number;
+  id: string;
 }
 
-const products: Product[] = [
+let products: Product[] = [
   {
-    id: "1",
     name: "Name",
     description: "Description",
     price: 9.99,
+    id: "1",
   },
   {
-    id: "2",
     name: "Second",
     description: "Description",
     price: 1.50,
+    id: "2",
   },
   {
-    id: "3",
     name: "Third",
     description: "Description",
     price: 20,
+    id: "3",
   },
   {
-    id: "4",
     name: "Fourth",
     description: "Description",
     price: 14.99,
+    id: "4",
   },
 ];
 
@@ -77,13 +77,17 @@ const addProduct = async (
   { response, request }: { response: any; request: any },
 ) => {
   try {
-    const body = request.body().value;
-    const product: Product = await body;
+    const body = await request.body().value;
+    const product: Product = body;
     const uniqid = uuidV4.generate();
 
     product.id = uniqid;
-    products.push(product);
+    
     console.log(product);
+    // console.log(typeof product);
+    console.log(typeof products);
+    products.push(product);
+    console.log(products);
     response.status = 201;
     response.body = {
       success: true,
