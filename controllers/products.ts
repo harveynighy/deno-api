@@ -37,8 +37,8 @@ let products: Product[] = [
 
 //* @desc   get all products
 //* @route    GET /api/v1/products
-const getProducts = (ctx) => {
-  ctx.response.body = {
+const getProducts = ({ response }: { response: any }) => {
+  response.body = {
     success: true,
     data: products,
   };
@@ -76,32 +76,25 @@ const getProduct = (
 const addProduct = async (
   { response, request }: { response: any; request: any },
 ) => {
-  try {
-    const body = await request.body().value;
-    const product: Product = body;
-    const uniqid = uuidV4.generate();
+  const body = await request.body();
+  const product: Product = await body.value;
 
+  if (!request.hasBody) {
+    response.status = 404;
+    response.body = {
+      success: false,
+      msg: "No data",
+    };
+  } else {
+    const uniqid = uuidV4.generate();
     product.id = uniqid;
-    
-    console.log(product);
-    // console.log(typeof product);
-    console.log(typeof products);
     products.push(product);
-    console.log(products);
+    console.log(product);
     response.status = 201;
     response.body = {
       success: true,
-      msg: "Recieved data to return",
       data: product,
     };
-  } catch (error) {
-    console.log(error);
-    response.status = 400;
-    response.body = {
-      success: false,
-      msg: "The request must have a body",
-    };
-    return;
   }
 };
 
